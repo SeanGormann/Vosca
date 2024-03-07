@@ -94,48 +94,44 @@ for url in doc_urls:
 
 
 # Function to wait for the presence of code sections and then extract content
-def wait_for_content_and_extract(url):
+def extract_content_and_code(url):
     driver.get(url)
     try:
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "body"))
-        )
+        # Wait for the page to be loaded
+        WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
     except TimeoutException:
         print(f"Timed out waiting for page to load: {url}")
         return {"url": url, "title": "", "content": []}
     
     soup = BeautifulSoup(driver.page_source, 'html.parser')
+    title = soup.find('title').text.strip() if soup.find('title') else ""
     
-    title = soup.find('title').text.strip()
-    
-    # This assumes all relevant content (text and code) is within a certain container
-    # Adjust the selector as needed to match the page structure
-    main_container = soup.select_one('main, .main-content')  # Example selector for the main content container
-    
+        # Collecting all paragraphs and code blocks
+    elements = soup.find_all(['p', 'li', 'pre'])
     content = []
+
+    for element in elements:
+        if element.name in ['p', 'li']:
+            content.append(element.get_text().strip())
+        elif element.name == 'pre':
+            # Extracting text directly from <pre> or its child <code>
+            code_text = element.get_text().strip()
+            content.append(code_text)
+
+    # Combine all paragraphs and code blocks into a single string
+    content = "\n".join(content)
     
-    if main_container:
-        # Iterate through all children of the main container
-        for child in main_container.children:
-            # If the child is a paragraph or list item, extract its text
-            if child.name in ['p', 'li']:
-                content.append(child.text.strip())
-            # If the child is a code section (assuming it's wrapped in a <pre> tag), extract its text
-            elif child.name == 'pre':
-                code_text = child.text.strip()
-                # Directly append code sections after the text that describes them
-                content.append(code_text)
     
     document = {
         "url": url,
         "title": title,
-        "content": content  # Keeping content ordered
+        "content": content,
     }
-    
+        
     return document
 
 
-documents = [wait_for_content_and_extract(url) for url in doc_urls]
+documents = [extract_content_and_code(url) for url in doc_urls]
 
 
 # Quit the driver session
