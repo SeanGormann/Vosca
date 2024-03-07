@@ -2,7 +2,7 @@
 A VisionOS Coding Assistant built using langchain and a local vectorstore for extra RAG context.
 -----
 
-RAG is a powerful method to keep LLM's up to date with relevant, specialised information so that they can be maximally benefecial for your use case. In this project, I'm first scrapinng data from VisionOS' Docs with my data-scraping.py file, which utilises selenium, beautifulsoup and other relevant tools for webscraping. After gathering the data, it's indexed and embeded in a local vectorstore using langchain tools including Chroma and LLamaCPPEmbeddings with nomic 1.5 weights. A proper RAG pipeline is then set up with an appropriate retriever, augmented prompt and suitable inference with a local llm - mistral:instruct. 
+RAG is a powerful method to keep LLM's up to date with relevant, specialised information so that they can be maximally benefecial for your use case. In this project, I'm first scraping data from VisionOS' Docs with my data-scraping.py file, which utilises selenium, beautifulsoup and other relevant tools for webscraping. After gathering the data, it's indexed and embeded in a local vectorstore using langchain tools including Chroma and LLamaCPPEmbeddings with nomic 1.5 weights. A proper RAG pipeline is then set up with an appropriate retriever, augmented prompt and suitable inference with a local llm - mistral:instruct. 
 
 -----
 
