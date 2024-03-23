@@ -33,6 +33,7 @@ Now that that's established, let's see how the base model compares to the RAG-Mo
 4. Implement the bouncing behavior: Write code to create the physics rules that will make the ball bounce when it collides with the Volume floor or other objects. You may use a collision detection library, like Open Collision Detection Library (OpenCollide), to implement these rules.
 
 ...
+
 ----
 **Prompt**: How can I display 3D content in a Volume in my VisionOS App? I want to create a ball that bounces in 3D space.
 
